@@ -15,12 +15,14 @@ Ensures consistant updating regardless of system performance. Keeps game at targ
 - Input Manager handles checking if keys or mouse buttons are pressed, released, or held.
 
 ## TODO
+- [ ] Find good name for engine.
 - [ ] Ensure proper frame timing.
 - [ ] Re-work room and entity system (and maybe sprite system).
 - [ ] Implement buffer strategy.
 - [ ] Implement gamepad support.
 - [ ] Implement resolution scaling system.
 - [ ] Implement anti-aliasing solution.
+- [ ] Make game using engine to demonstrate.
 
 ## How to use
 In its current state I do not reccomend that you use this engine for your game as there are still some kinks to be worked out. The level and object systems are planned to be re-worked and the engine serves more of a tech demo purpose at the moment.
