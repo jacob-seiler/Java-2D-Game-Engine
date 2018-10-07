@@ -1,10 +1,11 @@
 package me.jacob.zombiegame.engine;
 
+import java.awt.Canvas;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,27 +13,29 @@ import javax.swing.JPanel;
 import me.jacob.zombiegame.engine.entity.Entity;
 import me.jacob.zombiegame.engine.util.Logger;
 
-public class Game extends JPanel {
+public class Game extends Canvas {
 
 	private static final long serialVersionUID = -6500528472638126288L; // Generated serial
 
 	private boolean running;
-
-	private JFrame frame;
-	
 	private Dimension resolution;
 	
+	// Full screen variables
 	private boolean fullScreen;
 	private Dimension oldSize;
 	private Point oldLocation;
+	
+	private JFrame frame;
 
 	private double amountOfTicks = 0.0;
-	private double ns; // nano seconds
+	private double ns; // Nano seconds
 	
 	private Room currentRoom;
 	
 	private DisplayManager displayManager;
 	private InputManager inputManager;
+	
+	private BufferStrategy strategy;
 	
 	public Game(String title, Dimension resolution, Dimension window, int fps) {
 		// TODO load saved settings ?
@@ -44,13 +47,11 @@ public class Game extends JPanel {
 
 		setFPSLock(fps);
 		
-		// Setup JFrame
-		frame = new JFrame();
-		frame.setTitle(title);
-		frame.setResizable(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// Declare frame
+		frame = new JFrame(title);
 		
-		// Set frame size
+		// Setup panel
+		JPanel panel = (JPanel) frame.getContentPane();
 		frame.setPreferredSize(window);
 		frame.setMinimumSize(new Dimension(window.width / 2, window.height / 2));
 
@@ -59,22 +60,31 @@ public class Game extends JPanel {
 		inputManager = new InputManager(displayManager);
 		
 		// Setup listeners
-		frame.addKeyListener(inputManager);
-		frame.addMouseListener(inputManager);
-		frame.addMouseMotionListener(inputManager);
+		addKeyListener(inputManager);
+		addMouseListener(inputManager);
+		addMouseMotionListener(inputManager);
 		
-		frame.add(this);
+		panel.add(this);
 		displayManager.fixSize(window);
 		
-		frame.setLocationRelativeTo(null);
+		// Tell AWT that we will control when the canvas is repainted
+		setIgnoreRepaint(true);
 		
+		frame.pack();
+		frame.setResizable(true);
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+		
+		// Buffer Strategy
+		createBufferStrategy(2);
+		strategy = getBufferStrategy();
 	}
 	
 	/**
-	 * Adjusts the frame to be either windowed mode or fullscreen mode.
+	 * Adjusts the frame to be either windowed mode or full screen mode.
 	 * 
-	 * @param fullScreen true to set the window to fullscreen mode
+	 * @param fullScreen true to set the window to full screen mode
 	 */
 	public void setFullScreen(boolean fullScreen) {
 		if (this.fullScreen == fullScreen)
@@ -97,8 +107,9 @@ public class Game extends JPanel {
 			frame.setLocation(oldLocation);
 		}
 		
-		render();
+		frame.pack();
 		frame.setVisible(true);
+		render();
 		frame.toFront();
 	}
 
@@ -132,19 +143,9 @@ public class Game extends JPanel {
 	 * Call all related render functions.
 	 */
 	private void render() {
-		repaint(); // Tell JPanel to repaint
-	}
-
-	/**
-	 * Built-in JPanel paint method called when the panel is repainted.
-	 * 
-	 * @param g graphics used to draw onto the JPanel
-	 */
-	@Override
-	public void paintComponent(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
+		Graphics2D g2 = (Graphics2D) strategy.getDrawGraphics();
 		displayManager.scale(g2); // Scale
-
+		
 		// Draw room
 		if (currentRoom != null) {
 			currentRoom.draw(g2);
@@ -152,9 +153,13 @@ public class Game extends JPanel {
 			for (Entity e : currentRoom.getEntities())
 				e.draw(g2);
 		}
-
+		
 		displayManager.reset(g2);
 		displayManager.drawBars(g2); // Add black bars
+		
+		// Flip buffer
+		g2.dispose();
+		strategy.show();
 	}
 
 	/**

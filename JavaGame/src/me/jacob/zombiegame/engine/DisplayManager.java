@@ -160,7 +160,6 @@ public class DisplayManager {
 	public int fixMouse(double pos, boolean xAxis) {
 		if (xAxis) {
 			// Border offset
-			pos -= frame.getInsets().left; // Border
 			pos -= deadSpaceX / 2; // Black bars
 			
 			// Scale
@@ -169,7 +168,6 @@ public class DisplayManager {
 			return (int) pos;
 		} else {
 			// Border offset
-			pos -= frame.getInsets().top; // Border
 			pos -= deadSpaceY / 2; // Black bars
 			
 			// Scale
