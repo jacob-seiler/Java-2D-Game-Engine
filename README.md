@@ -18,7 +18,7 @@ Ensures consistant updating regardless of system performance. Keeps game at targ
 - [ ] Find good name for engine.
 - [ ] Ensure proper frame timing.
 - [ ] Re-work room and entity system (and maybe sprite system).
-- [ ] Implement buffer strategy.
+- [X] Implement buffer strategy.
 - [ ] Implement gamepad support.
 - [ ] Implement resolution scaling system.
 - [ ] Implement anti-aliasing solution.
