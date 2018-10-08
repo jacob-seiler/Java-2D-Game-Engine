@@ -4,6 +4,7 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 
@@ -145,11 +146,24 @@ public class Game extends Canvas {
 		Graphics2D g2 = (Graphics2D) strategy.getDrawGraphics();
 		displayManager.scale(g2); // Scale
 		
-		// Draw room
+		// Rendering Hints
+		RenderingHints rh = g2.getRenderingHints();
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
+		g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
+		g2.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+		g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		
+		// Draw room & props
 		if (currentRoom != null) {
 			currentRoom.draw(g2);
 			getPropManager().drawAll(g2);
 		}
+		
+		// Reset rendering hints
+		g2.setRenderingHints(rh);
 		
 		displayManager.reset(g2);
 		displayManager.drawBars(g2); // Add black bars
