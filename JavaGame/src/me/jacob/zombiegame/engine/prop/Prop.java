@@ -1,4 +1,4 @@
-package me.jacob.zombiegame.engine.entity;
+package me.jacob.zombiegame.engine.prop;
 
 import java.awt.Graphics2D;
 
@@ -8,7 +8,7 @@ import me.jacob.zombiegame.engine.sprite.Sprite;
 import me.jacob.zombiegame.engine.sprite.SpriteImage;
 import me.jacob.zombiegame.engine.util.Sortable;
 
-public abstract class Entity implements Sortable {
+public abstract class Prop implements Sortable {
 	
 	public boolean enabled;
 	
@@ -19,7 +19,7 @@ public abstract class Entity implements Sortable {
 
 	// Entity sprite
 	public abstract Sprite getSprite();
-	private EntityMask mask;
+	private PropMask mask;
 	
 	// Presence
 	private Game game;
@@ -28,7 +28,7 @@ public abstract class Entity implements Sortable {
 	/**
 	 * Initialization. Declare and setup variables.
 	 */
-	public Entity(Game game, Room room) {
+	public Prop(Game game, Room room) {
 		enabled = true;
 		
 		x = 0.0;
@@ -40,11 +40,11 @@ public abstract class Entity implements Sortable {
 		
 		mask = null; // Declare mask
 		
-		game.getEntityManager().addEntity(this);
+		game.getPropManager().addProp(this);
 	}
 	
 	/**
-	 * Called by game when entity needs to be drawn. Calls sprite draw method.
+	 * Called by game when prop needs to be drawn. Calls sprite draw method.
 	 * 
 	 * @param g2 graphics used to draw with
 	 */
@@ -53,18 +53,18 @@ public abstract class Entity implements Sortable {
 	}
 
 	/**
-	 * Called by game when entity needs to be updated.
+	 * Called by game when prop needs to be updated.
 	 * 
 	 * @param delta value used to adjust for change in time between frames
 	 */
 	public abstract void update(double delta);
 	
 	/**
-	 * Gets/configures the entity mask for this entity.
+	 * Gets/configures the prop mask for this prop.
 	 * 
-	 * @return the entity mask for this entity
+	 * @return the prop mask for this prop
 	 */
-	public EntityMask getMask() {
+	public PropMask getMask() {
 		if (getSprite() == null)
 			return null;
 		
@@ -88,18 +88,18 @@ public abstract class Entity implements Sortable {
 	}
 	
 	/**
-	 * Gets the game that the entity is a part of.
+	 * Gets the game that the prop is a part of.
 	 * 
-	 * @return the game associated with the entity
+	 * @return the game associated with the prop
 	 */
 	public Game getGame() {
 		return game;
 	}
 	
 	/**
-	 * Gets the room that the entity is bound to.
+	 * Gets the room that the prop is bound to.
 	 * 
-	 * @return the room that the entity is bound to
+	 * @return the room that the prop is bound to
 	 */
 	public Room getRoom() {
 		return room;
@@ -107,27 +107,27 @@ public abstract class Entity implements Sortable {
 	
 	
 	/**
-	 * Sets the room that the entity is bound to.
+	 * Sets the room that the prop is bound to.
 	 * 
-	 * @param room the room that the entity is bound to
+	 * @param room the room that the prop is bound to
 	 */
 	public void setRoom(Room room) {
 		this.room = room;
 	}
 	
 	/**
-	 * Checks if the entity is persistent (not room bound).
+	 * Checks if the prop is persistent (not room bound).
 	 * 
-	 * @return true, if the entity is persistent
+	 * @return true, if the prop is persistent
 	 */
 	public boolean isPersistent() {
 		return room == null;
 	}
 	
 	/**
-	 * Gets the depth value of the entity for sorting purposes.
+	 * Gets the depth value of the prop for sorting purposes.
 	 * 
-	 * @return the entity depth value
+	 * @return the prop depth value
 	 */
 	public double getDepth() {
 		return depth;

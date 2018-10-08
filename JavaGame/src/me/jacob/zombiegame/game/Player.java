@@ -7,8 +7,10 @@ import java.awt.event.KeyEvent;
 import me.jacob.zombiegame.engine.Game;
 import me.jacob.zombiegame.engine.InputManager;
 import me.jacob.zombiegame.engine.Room;
+import me.jacob.zombiegame.engine.prop.Prop;
+import me.jacob.zombiegame.engine.sprite.Sprite;
 
-public class Player extends Human {
+public class Player extends Prop {
 
 	// TODO appearance ?
 
@@ -75,6 +77,11 @@ public class Player extends Human {
 
 		g2.setColor(Color.PINK);
 		g2.fillOval((int) targetX - 50, (int) targetY - 50, 100, 100);
+	}
+
+	@Override
+	public Sprite getSprite() {
+		return null;
 	}
 
 }

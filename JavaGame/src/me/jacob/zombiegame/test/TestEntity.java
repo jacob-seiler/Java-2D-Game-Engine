@@ -4,11 +4,11 @@ import java.awt.event.KeyEvent;
 
 import me.jacob.zombiegame.engine.Game;
 import me.jacob.zombiegame.engine.Room;
-import me.jacob.zombiegame.engine.entity.Entity;
+import me.jacob.zombiegame.engine.prop.Prop;
 import me.jacob.zombiegame.engine.sprite.Sprite;
 import me.jacob.zombiegame.engine.sprite.SpriteImage;
 
-public class TestEntity extends Entity {
+public class TestEntity extends Prop {
 
 	private boolean paused = false;
 	

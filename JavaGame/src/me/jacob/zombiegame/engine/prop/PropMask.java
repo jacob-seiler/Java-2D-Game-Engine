@@ -1,6 +1,6 @@
-package me.jacob.zombiegame.engine.entity;
+package me.jacob.zombiegame.engine.prop;
 
-public class EntityMask {
+public class PropMask {
 
 	// Mask parameters
 	private double x;
@@ -16,7 +16,7 @@ public class EntityMask {
 	 * @param width size on the x-axis
 	 * @param height size on the y-axis
 	 */
-	public EntityMask(double x, double y, double width, double height) {
+	public PropMask(double x, double y, double width, double height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
