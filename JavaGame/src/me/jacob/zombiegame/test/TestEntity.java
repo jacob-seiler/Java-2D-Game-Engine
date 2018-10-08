@@ -2,7 +2,8 @@ package me.jacob.zombiegame.test;
 
 import java.awt.event.KeyEvent;
 
-import me.jacob.zombiegame.Main;
+import me.jacob.zombiegame.engine.Game;
+import me.jacob.zombiegame.engine.Room;
 import me.jacob.zombiegame.engine.entity.Entity;
 import me.jacob.zombiegame.engine.sprite.Sprite;
 import me.jacob.zombiegame.engine.sprite.SpriteImage;
@@ -19,17 +20,19 @@ public class TestEntity extends Entity {
 
 	private Sprite sprite;
 
-	public TestEntity() {
+	public TestEntity(Game game, Room room) {
+		super(game, room);
+
 		sprite = new Sprite(new SpriteImage("test.png", width, height));
 	}
 
 	@Override
 	public void update(double delta) {
 		// Toggle pause
-		if (Main.getGame().getInputManager().keyIsPressed(KeyEvent.VK_SPACE))
+		if (getGame().getInputManager().keyIsPressed(KeyEvent.VK_SPACE))
 			paused = true;
 		
-		if (Main.getGame().getInputManager().keyIsReleased(KeyEvent.VK_SPACE))
+		if (getGame().getInputManager().keyIsReleased(KeyEvent.VK_SPACE))
 			paused = false;
 		
 		if (paused)
@@ -43,8 +46,8 @@ public class TestEntity extends Entity {
 		if (x <= 0) {
 			x = 0;
 			speedX = Math.abs(speedX);
-		} else if (x + width >= Main.getGame().getResolution().width) {
-			x = Main.getGame().getResolution().width - width;
+		} else if (x + width >= getGame().getResolution().width) {
+			x = getGame().getResolution().width - width;
 			speedX = -1 * Math.abs(speedX);
 		}
 		
@@ -52,8 +55,8 @@ public class TestEntity extends Entity {
 		if (y <= 0) {
 			y = 0;
 			speedY = Math.abs(speedY);
-		} else if (y + height >= Main.getGame().getResolution().height) {
-			y = Main.getGame().getResolution().height - height;
+		} else if (y + height >= getGame().getResolution().height) {
+			y = getGame().getResolution().height - height;
 			speedY = -1 * Math.abs(speedY);
 		}
 	}

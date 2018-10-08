@@ -10,7 +10,7 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import me.jacob.zombiegame.engine.entity.Entity;
+import me.jacob.zombiegame.engine.entity.EntityManager;
 import me.jacob.zombiegame.engine.util.Logger;
 
 public class Game extends Canvas {
@@ -34,6 +34,7 @@ public class Game extends Canvas {
 	
 	private DisplayManager displayManager;
 	private InputManager inputManager;
+	private EntityManager entityManager;
 	
 	private BufferStrategy strategy;
 	
@@ -58,6 +59,7 @@ public class Game extends Canvas {
 		// Setup managers
 		displayManager = new DisplayManager(frame, resolution);
 		inputManager = new InputManager(displayManager);
+		entityManager = new EntityManager();
 		
 		// Setup listeners
 		addKeyListener(inputManager);
@@ -131,9 +133,7 @@ public class Game extends Canvas {
 	private void tick(double delta) {
 		if (currentRoom != null) {
 			currentRoom.update(delta); // Update current room
-			
-			for (Entity e : currentRoom.getEntities())
-				e.update(delta);
+			getEntityManager().updateEntities(delta);
 		}
 		
 		inputManager.tick(); // Update key manager
@@ -149,9 +149,7 @@ public class Game extends Canvas {
 		// Draw room
 		if (currentRoom != null) {
 			currentRoom.draw(g2);
-			
-			for (Entity e : currentRoom.getEntities())
-				e.draw(g2);
+			getEntityManager().drawEntities(g2);
 		}
 		
 		displayManager.reset(g2);
@@ -177,7 +175,12 @@ public class Game extends Canvas {
 	 * @param room the room to use
 	 */
 	public void setCurrentRoom(Room room) {
+		if (this.currentRoom == room)
+			return;
+		
 		currentRoom = room;
+		
+		getEntityManager().clean(currentRoom);
 	}
 
 	/**
@@ -229,6 +232,15 @@ public class Game extends Canvas {
 	 */
 	public InputManager getInputManager() {
 		return inputManager;
+	}
+	
+	/**
+	 * Gets the entity manager
+	 * 
+	 * @return the entity manager
+	 */
+	public EntityManager getEntityManager() {
+		return entityManager;
 	}
 
 	/**

@@ -2,37 +2,30 @@ package me.jacob.zombiegame.game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Arrays;
-import java.util.List;
+import java.awt.event.KeyEvent;
 
-import me.jacob.zombiegame.Main;
+import me.jacob.zombiegame.engine.Game;
 import me.jacob.zombiegame.engine.Room;
-import me.jacob.zombiegame.engine.entity.Entity;
+import me.jacob.zombiegame.test.TestScreen;
 
 public class DebugRoom extends Room {
 
-	private List<Entity> entities;
-	private Player player;
-	
-	public DebugRoom() {
-		player = new Player();
-		entities = Arrays.asList(player);
+	public DebugRoom(Game game) {
+		super(game);
+		
+		new Player(game, this);
 	}
 	
 	@Override
 	public void update(double delta) {
-		
+		if (getGame().getInputManager().keyIsPressed(KeyEvent.VK_ENTER))
+			getGame().setCurrentRoom(new TestScreen(getGame()));
 	}
 
 	@Override
 	public void draw(Graphics2D g2) {
 		g2.setColor(Color.WHITE);
-		g2.fillRect(0, 0, Main.getGame().getResolution().width, Main.getGame().getResolution().height);
-	}
-	
-	@Override
-	public List<Entity> getEntities() {
-		return entities;
+		g2.fillRect(0, 0, getGame().getResolution().width, getGame().getResolution().height);
 	}
 
 }

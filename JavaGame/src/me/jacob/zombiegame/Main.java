@@ -19,14 +19,10 @@ public class Main {
 		
 		// Initialize and setup new game
 		game = new Game("Zombie Game", resolution, window, 60);
-		game.setCurrentRoom(new DebugRoom());
-		game.setFullScreen(true);
-		game.setFullScreen(false);
+		game.setCurrentRoom(new DebugRoom(game));
+//		game.setFullScreen(true);
+//		game.setFullScreen(false);
 		game.start(); // Run game loop
-	}
-	
-	public static Game getGame() {
-		return game;
 	}
 	
 }

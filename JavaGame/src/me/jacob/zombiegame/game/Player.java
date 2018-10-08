@@ -4,8 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
-import me.jacob.zombiegame.Main;
+import me.jacob.zombiegame.engine.Game;
 import me.jacob.zombiegame.engine.InputManager;
+import me.jacob.zombiegame.engine.Room;
 
 public class Player extends Human {
 	
@@ -18,7 +19,9 @@ public class Player extends Human {
 	
 	private int targetX, targetY;
 	
-	public Player() {
+	public Player(Game game, Room room) {
+		super(game, room); // TODO
+		
 		speed = 20;
 		dirX = 0;
 		dirY = 0;
@@ -26,7 +29,7 @@ public class Player extends Human {
 		targetX = 0;
 		targetY = 0;
 		
-		im = Main.getGame().getInputManager();
+		im = game.getInputManager();
 	}
 	
 	@Override

@@ -1,14 +1,24 @@
 package me.jacob.zombiegame.engine;
 
 import java.awt.Graphics2D;
-import java.util.List;
-
-import me.jacob.zombiegame.engine.entity.Entity;
 
 public abstract class Room {
 
-	public abstract List<Entity> getEntities();
+	private Game game;
 	
+	public Room(Game game) {
+		this.game = game;
+	}
+
+	/**
+	 * Gets the game that the room is a part of.
+	 * 
+	 * @return the game associated with the room
+	 */
+	public Game getGame() {
+		return game;
+	}
+
 	/**
 	 * Called by game when room needs to be updated.
 	 * 
