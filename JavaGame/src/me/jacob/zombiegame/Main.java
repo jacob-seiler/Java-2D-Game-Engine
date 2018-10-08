@@ -10,7 +10,7 @@ public class Main {
 	private static Game game;
 	
 	public static void main(String[] args) {
-		double aspectRatio = 16.0 / 9.0;
+		double aspectRatio = 18.0 / 12.0;
 		int width = 1080;
 		int height = (int) (width / aspectRatio);
 		

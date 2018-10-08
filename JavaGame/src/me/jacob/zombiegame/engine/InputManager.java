@@ -132,6 +132,12 @@ public class InputManager implements KeyListener, MouseListener, MouseMotionList
 		mouseX = e.getX();
 		mouseY = e.getY();
 	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		mouseX = e.getX();
+		mouseY = e.getY();
+	}
 	
 	/** Unused methods */
 	
@@ -149,10 +155,6 @@ public class InputManager implements KeyListener, MouseListener, MouseMotionList
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent e) {
 	}
 
 }
