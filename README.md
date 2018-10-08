@@ -23,7 +23,7 @@ Ensures consistant updating regardless of system performance. Keeps game at targ
 - [X] Implement buffer strategy.
 - [ ] Implement gamepad support.
 - [ ] Implement resolution scaling system.
-- [ ] Implement anti-aliasing solution.
+- [X] Implement anti-aliasing solution.
 - [ ] Make game using engine to demonstrate.
 
 ## How to use
