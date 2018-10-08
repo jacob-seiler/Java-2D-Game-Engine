@@ -6,8 +6,9 @@ import me.jacob.zombiegame.engine.Game;
 import me.jacob.zombiegame.engine.Room;
 import me.jacob.zombiegame.engine.sprite.Sprite;
 import me.jacob.zombiegame.engine.sprite.SpriteImage;
+import me.jacob.zombiegame.engine.util.Sortable;
 
-public abstract class Entity {
+public abstract class Entity implements Sortable {
 	
 	public boolean enabled;
 	
@@ -121,6 +122,15 @@ public abstract class Entity {
 	 */
 	public boolean isPersistent() {
 		return room == null;
+	}
+	
+	/**
+	 * Gets the depth value of the entity for sorting purposes.
+	 * 
+	 * @return the entity depth value
+	 */
+	public double getDepth() {
+		return depth;
 	}
 	
 }

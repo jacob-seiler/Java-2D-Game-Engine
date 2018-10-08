@@ -109,7 +109,6 @@ public class Game extends Canvas {
 			frame.setLocation(oldLocation);
 		}
 		
-		frame.pack();
 		frame.setVisible(true);
 		render();
 		frame.toFront();

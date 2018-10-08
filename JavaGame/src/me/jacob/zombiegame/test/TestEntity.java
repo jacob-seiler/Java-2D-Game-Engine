@@ -59,6 +59,8 @@ public class TestEntity extends Entity {
 			y = getGame().getResolution().height - height;
 			speedY = -1 * Math.abs(speedY);
 		}
+		
+		depth = -y;
 	}
 	
 	@Override

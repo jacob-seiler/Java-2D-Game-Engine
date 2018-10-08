@@ -20,7 +20,7 @@ public class Player extends Human {
 	private int targetX, targetY;
 	
 	public Player(Game game, Room room) {
-		super(game, room); // TODO
+		super(game, room);
 		
 		speed = 20;
 		dirX = 0;
@@ -53,6 +53,8 @@ public class Player extends Human {
 		
 		x += speed * dirX * delta;
 		y += speed * dirY * delta;
+		
+		depth = -y;
 	}
 	
 	@Override

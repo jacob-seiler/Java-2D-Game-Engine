@@ -17,12 +17,14 @@ public class Main {
 		Dimension window = new Dimension(width, height);
 		Dimension resolution = new Dimension(width * 5, height * 5);
 		
-		// Initialize and setup new game
+		// Initialize game
 		game = new Game("Zombie Game", resolution, window, 60);
+		
+		// Create room
 		game.setCurrentRoom(new DebugRoom(game));
-//		game.setFullScreen(true);
-//		game.setFullScreen(false);
-		game.start(); // Run game loop
+
+		// Run game loop
+		game.start();
 	}
 	
 }
