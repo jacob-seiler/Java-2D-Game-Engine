@@ -17,7 +17,9 @@ Ensures consistant updating regardless of system performance. Keeps game at targ
 ## TODO
 - [ ] Find good name for engine.
 - [ ] Ensure proper frame timing.
-- [ ] Re-work room and entity system (and maybe sprite system).
+- [X] Re-work room system.
+- [X] Re-work entity system.
+- [ ] Re-work sprite system.
 - [X] Implement buffer strategy.
 - [ ] Implement gamepad support.
 - [ ] Implement resolution scaling system.
