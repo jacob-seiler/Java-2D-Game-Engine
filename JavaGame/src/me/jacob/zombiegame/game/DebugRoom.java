@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 
 import me.jacob.zombiegame.engine.Game;
 import me.jacob.zombiegame.engine.Room;
-import me.jacob.zombiegame.test.TestScreen;
+import me.jacob.zombiegame.test.TestRoom;
 
 public class DebugRoom extends Room {
 
@@ -19,7 +19,7 @@ public class DebugRoom extends Room {
 	@Override
 	public void update(double delta) {
 		if (getGame().getInputManager().keyIsPressed(KeyEvent.VK_ENTER))
-			getGame().setCurrentRoom(new TestScreen(getGame()));
+			getGame().setCurrentRoom(new TestRoom(getGame()));
 	}
 
 	@Override

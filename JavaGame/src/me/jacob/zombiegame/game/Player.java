@@ -74,7 +74,7 @@ public class Player extends Prop {
 
 		g2.setColor(Color.BLACK);
 		g2.drawOval((int) x - targetSize, (int) y - (targetSize + 180), targetSize * 2, targetSize * 2);
-
+		
 		g2.setColor(Color.PINK);
 		g2.fillOval((int) targetX - 50, (int) targetY - 50, 100, 100);
 	}

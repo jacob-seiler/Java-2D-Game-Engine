@@ -8,7 +8,7 @@ import me.jacob.zombiegame.engine.prop.Prop;
 import me.jacob.zombiegame.engine.sprite.Sprite;
 import me.jacob.zombiegame.engine.sprite.SpriteImage;
 
-public class TestEntity extends Prop {
+public class TestProp extends Prop {
 
 	private boolean paused = false;
 	
@@ -20,7 +20,7 @@ public class TestEntity extends Prop {
 
 	private Sprite sprite;
 
-	public TestEntity(Game game, Room room) {
+	public TestProp(Game game, Room room) {
 		super(game, room);
 
 		sprite = new Sprite(new SpriteImage("test.png", width, height));
@@ -38,9 +38,14 @@ public class TestEntity extends Prop {
 		if (paused)
 			return;
 		
+		int fast = 1;
+		
+		if (getGame().getInputManager().keyIsHeld(KeyEvent.VK_SHIFT))
+			fast = 16;
+		
 		// Move
-		x += speedX * delta;
-		y += speedY * delta;
+		x += speedX * delta * fast;
+		y += speedY * delta * fast;
 		
 		// Left and right wall collisions, change direction
 		if (x <= 0) {
@@ -59,8 +64,6 @@ public class TestEntity extends Prop {
 			y = getGame().getResolution().height - height;
 			speedY = -1 * Math.abs(speedY);
 		}
-		
-		depth = -y;
 	}
 	
 	@Override

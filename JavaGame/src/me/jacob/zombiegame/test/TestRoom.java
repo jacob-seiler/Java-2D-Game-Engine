@@ -6,12 +6,12 @@ import java.awt.Graphics2D;
 import me.jacob.zombiegame.engine.Game;
 import me.jacob.zombiegame.engine.Room;
 
-public class TestScreen extends Room {
+public class TestRoom extends Room {
 
-	public TestScreen(Game game) {
+	public TestRoom(Game game) {
 		super(game);
 		
-		new TestEntity(game, this);
+		new TestProp(game, this);
 	}
 
 	@Override
