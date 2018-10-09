@@ -51,8 +51,8 @@ public class TestProp extends Prop {
 		if (x <= 0) {
 			x = 0;
 			speedX = Math.abs(speedX);
-		} else if (x + width >= getGame().getResolution().width) {
-			x = getGame().getResolution().width - width;
+		} else if (x + width >= (int) getGame().getDisplayManager().width) {
+			x = (int) getGame().getDisplayManager().width - width;
 			speedX = -1 * Math.abs(speedX);
 		}
 		
@@ -60,8 +60,8 @@ public class TestProp extends Prop {
 		if (y <= 0) {
 			y = 0;
 			speedY = Math.abs(speedY);
-		} else if (y + height >= getGame().getResolution().height) {
-			y = getGame().getResolution().height - height;
+		} else if (y + height >= (int) getGame().getDisplayManager().height) {
+			y = (int) getGame().getDisplayManager().height - height;
 			speedY = -1 * Math.abs(speedY);
 		}
 	}

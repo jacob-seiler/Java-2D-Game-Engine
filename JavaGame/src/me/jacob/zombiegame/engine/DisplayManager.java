@@ -1,19 +1,29 @@
 package me.jacob.zombiegame.engine;
 
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
-public class DisplayManager {
+import me.jacob.zombiegame.engine.prop.PropManager;
+
+public class DisplayManager extends Canvas {
 	
-	// Values from game
+	private static final long serialVersionUID = 4512280121799171194L; // Generated serial
+	
+	// Frame information
 	private JFrame frame;
-	private double width;
-	private double height;
+	public double width;
+	public double height;
 	
 	// Scale calculations
 	private double scaleX;
@@ -24,8 +34,14 @@ public class DisplayManager {
 	private boolean isScaled;
 	private AffineTransform vanilla;
 	
-	public DisplayManager(JFrame frame, Dimension resolution) {
-		this.frame = frame;
+	private BufferStrategy strategy;
+	
+	// Full screen variables
+	private boolean fullScreen;
+	private Dimension oldSize;
+	private Point oldLocation;
+	
+	public DisplayManager(String title, Dimension resolution, Dimension window) {
 		width = resolution.getWidth();
 		height = resolution.getHeight();
 		
@@ -36,6 +52,43 @@ public class DisplayManager {
 		deadSpaceY = 0;
 		
 		isScaled = false;
+		
+		fullScreen = false;
+		
+		// Declare values
+		frame = new JFrame(title);
+		
+		// Setup panel
+		JPanel panel = (JPanel) frame.getContentPane();
+		frame.setPreferredSize(window);
+		frame.setMinimumSize(new Dimension(window.width / 2, window.height / 2));
+
+		panel.add(this);
+		fixSize(window);
+		
+		// Tell AWT that we will control when the canvas is repainted
+		setIgnoreRepaint(true);
+		
+		// Buffer Strategy
+		createBufferStrategy(2);
+		strategy = getBufferStrategy();
+		
+		frame.pack();
+		frame.setResizable(true);
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+
+	/**
+	 * Sets up all key and mouse listeners.
+	 * 
+	 * @param inputManager the InputManager for tracking key and mouse activity
+	 */
+	public void setupListeners(InputManager inputManager) {
+		addKeyListener(inputManager);
+		addMouseListener(inputManager);
+		addMouseMotionListener(inputManager);
 	}
 	
 	/**
@@ -52,7 +105,7 @@ public class DisplayManager {
 	 * 
 	 * @param g2 the graphics to apply the transformations to
 	 */
-	public void reset(Graphics2D g2) {
+	private void reset(Graphics2D g2) {
 		g2.setTransform(vanilla); // Reset
 		isScaled = false;
 	}
@@ -92,7 +145,7 @@ public class DisplayManager {
 	 * 
 	 * @param g2 the graphics to apply transformation to
 	 */
-	public void scale(Graphics2D g2) {
+	private void scale(Graphics2D g2) {
 		if (isScaled())
 			reset(g2);
 		
@@ -116,7 +169,7 @@ public class DisplayManager {
 	 * 
 	 * @param g2 the graphics to use to draw the bars
 	 */
-	public void drawBars(Graphics2D g2) {
+	private void drawBars(Graphics2D g2) {
 		if (scaleX < scaleY) {
 			// Top / bottom bars
 			g2.setColor(Color.BLACK);
@@ -175,6 +228,94 @@ public class DisplayManager {
 			
 			return (int) pos;
 		}
+	}
+	
+	/**
+	 * Call all related render functions.
+	 * 
+	 * @param currentRoom the room to render
+	 * @param propManager the prop manager to render props
+	 */
+	public void render(Room currentRoom, PropManager propManager) {
+		Graphics2D g2 = (Graphics2D) strategy.getDrawGraphics();
+		scale(g2); // Scale
+		
+		// Rendering Hints
+		RenderingHints rh = g2.getRenderingHints();
+		g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
+		g2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
+		g2.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+		g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); // TODO
+		
+		// Draw room & props
+		if (currentRoom != null) {
+			currentRoom.draw(g2);
+			propManager.drawAll(g2);
+		}
+		
+		// Reset rendering hints
+		g2.setRenderingHints(rh);
+		
+		reset(g2);
+		drawBars(g2); // Add black bars
+		
+		// Flip buffer
+		g2.dispose();
+		strategy.show();
+	}
+
+	/**
+	 * Toggles anti aliasing.
+	 * 
+	 * @param g2 the graphics to apply the anti aliasing to
+	 * @param toggle true to enable anti aliasing
+	 */
+	public void setAntiAliasing(Graphics2D g2, boolean toggle) {
+		if (toggle)
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		else
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+	}
+	
+	/**
+	 * Adjusts the frame to be either windowed mode or full screen mode.
+	 * 
+	 * @param fullScreen true to set the window to full screen mode
+	 */
+	public void setFullScreen(boolean fullScreen) {
+		if (this.fullScreen == fullScreen)
+			return;
+		
+		this.fullScreen = fullScreen;
+		
+		frame.setVisible(false);
+		frame.dispose();
+		frame.setUndecorated(fullScreen);
+		
+		if (fullScreen) {
+			oldSize = frame.getSize();
+			oldLocation = frame.getLocation();
+			
+			frame.setLocation(0, 0);
+			frame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+		} else {
+			frame.setSize(oldSize);
+			frame.setLocation(oldLocation);
+		}
+		
+		frame.setVisible(true);
+		frame.toFront();
+	}
+	
+	/**
+	 * Checks if the screen is currently in full screen mode.
+	 * 
+	 * @return true, if in full screen mode
+	 */
+	public boolean isFullScreen() {
+		return fullScreen;
 	}
 	
 }

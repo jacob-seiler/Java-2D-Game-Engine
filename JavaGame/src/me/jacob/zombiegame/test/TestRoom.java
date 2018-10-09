@@ -17,7 +17,7 @@ public class TestRoom extends Room {
 	@Override
 	public void draw(Graphics2D g2) {
 		g2.setColor(Color.WHITE);
-		g2.fillRect(0, 0, getGame().getResolution().width, getGame().getResolution().height);
+		g2.fillRect(0, 0, (int) getGame().getDisplayManager().width, (int) getGame().getDisplayManager().height);
 	}
 
 	@Override
