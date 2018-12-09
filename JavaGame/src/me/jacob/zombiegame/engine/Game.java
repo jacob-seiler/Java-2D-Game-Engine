@@ -82,7 +82,7 @@ public class Game {
 		
 		currentRoom = room;
 		
-		getPropManager().clean(currentRoom);
+		getPropManager().removeNonPersistent(currentRoom);
 	}
 
 	/**

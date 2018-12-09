@@ -2,89 +2,68 @@ package me.jacob.zombiegame.engine.prop;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import me.jacob.zombiegame.engine.Room;
-import me.jacob.zombiegame.engine.util.Sorter;
+import me.jacob.zombiegame.engine.util.Logger;
 
 public class PropManager {
 	
-	private Prop[] props;
+	private List<Prop> props;
 	
 	public PropManager() {
-		props = new Prop[0];
+		props = new ArrayList<Prop>();
 	}
 	
 	public void addProp(Prop p) {
-		// Convert array to list and add
-		List<Prop> list = new ArrayList<Prop>(Arrays.asList(props));
-		list.add(p);
+		// Add prop to list
+		props.add(p);
 		
-		// Convert list back to array and replace
-		props = list.toArray(new Prop[list.size()]);
+		// Enable prop
 		p.enabled = true;
 	}
 	
-	public void removeProp(Prop p) {
+	private void disableProp(Prop p) {
 		p.enabled = false;
 		
-		for (int i = 0; i < props.length; i++)
-			if (props[i] == p)
-				props[i] = null;
-
-		clean();
+		if (p.getSprite() != null)
+			p.getSprite().unload();
 	}
 	
-	public Prop[] getProps() {
+	public void removeProp(Prop p) {
+		// Disable prop
+		disableProp(p);
+		
+		// Remove prop from list
+		for (int i = 0; i < props.size(); i++)
+			if (props.get(i) == p)
+				props.remove(i);
+	}
+	
+	public List<Prop> getProps() {
 		return props;
 	}
 	
-	/**
-	 * Removes null items from the array.
-	 */
-	public void clean() {
-		List<Prop> list = new ArrayList<Prop>();
-		
-		for (Prop p : props)
-			if (p != null)
-				list.add(p);
-		
-		props = list.toArray(new Prop[list.size()]);
-	}
-	
-	public void clean(Room newRoom) {
-		clean();
+	public void removeNonPersistent(Room newRoom) {
+		for (int i = 0; i < props.size(); i++) {
+			Prop p = props.get(i);
 			
-		List<Prop> remove = new ArrayList<Prop>();
-		
-		for (Prop p : props)
-			if (!p.isPersistent() && p.getRoom() != newRoom)
-				remove.add(p);
-		
-		for (Prop p : remove) {
-			if (p.getSprite() != null)
-				p.getSprite().unload();
-			
-			removeProp(p);
+			if (!p.isPersistent() && p.getRoom() != newRoom) {
+				disableProp(p);
+				props.remove(i);
+			}
 		}
 	}
 	
-	private void sortByDepth() {
-		Sorter.quicksort(props);
-	}
-	
 	public void updateAll(double delta) {
-		sortByDepth();
-		
 		for (Prop p : props)
 			if (p.enabled)
 				p.update(delta);
+		
+		// TODO sort all props by depth
 	}
 
 	public void drawAll(Graphics2D g2) {
-		sortByDepth();
-		
 		for (Prop p : props)
 			if (p.enabled)
 				p.draw(g2);

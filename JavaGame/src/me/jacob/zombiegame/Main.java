@@ -18,7 +18,7 @@ public class Main {
 		Dimension resolution = new Dimension(width * 5, height * 5);
 		
 		// Initialize game
-		game = new Game("Zombie Game", resolution, window, 60);
+		game = new Game("Game", resolution, window, 60);
 		
 		// Create room
 		game.setCurrentRoom(new DebugRoom(game));

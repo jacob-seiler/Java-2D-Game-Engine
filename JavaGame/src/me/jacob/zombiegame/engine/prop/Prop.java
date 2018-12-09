@@ -6,9 +6,8 @@ import me.jacob.zombiegame.engine.Game;
 import me.jacob.zombiegame.engine.Room;
 import me.jacob.zombiegame.engine.sprite.Sprite;
 import me.jacob.zombiegame.engine.sprite.SpriteImage;
-import me.jacob.zombiegame.engine.util.Sortable;
 
-public abstract class Prop implements Sortable {
+public abstract class Prop {
 	
 	public boolean enabled;
 	
@@ -123,14 +122,4 @@ public abstract class Prop implements Sortable {
 	public boolean isPersistent() {
 		return room == null;
 	}
-	
-	/**
-	 * Gets the depth value of the prop for sorting purposes.
-	 * 
-	 * @return the prop depth value
-	 */
-	public double getDepth() {
-		return depth;
-	}
-	
 }
