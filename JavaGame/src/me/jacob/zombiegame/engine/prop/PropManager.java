@@ -45,17 +45,25 @@ public class PropManager {
 	public List<Prop> getProps() {
 		return props;
 	}
-	
-	public void removeNonPersistent(Room newRoom) {
-		for (int i = 0; i < props.size(); i++) {
-			Prop p = props.get(i);
-			
-			if (!p.isPersistent() && p.getRoom() != newRoom) {
-				disableProp(p);
-				props.remove(i);
-			}
-		}
-	}
+
+    public void removeNonPersistent(Room newRoom) {
+        List<Prop> delete = new ArrayList<>();
+
+        for (int i = 0; i < props.size(); i++) {
+            Prop p = props.get(i);
+
+            if (p.isPersistent())
+                continue;
+
+            if (p.getRoom() != newRoom) {
+                disableProp(p);
+                delete.add(p);
+            }
+        }
+
+        for (Prop p : delete)
+            props.remove(p);
+    }
 	
 	public void updateAll(double delta) {
 		for (Prop p : props)

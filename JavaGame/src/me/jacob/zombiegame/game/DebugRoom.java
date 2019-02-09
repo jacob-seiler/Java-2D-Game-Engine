@@ -20,11 +20,12 @@ public class DebugRoom extends Room {
 		this.game = game;
 		
 		new Player(game, this);
+		new TestProp(game, this);
 	}
 	
 	@Override
 	public void update(double delta) {
-		game.getPropManager().sort();
+	    game.getPropManager().sort();
 
 		if (getGame().getInputManager().keyIsPressed(KeyEvent.VK_ENTER))
 			getGame().setCurrentRoom(new TestRoom(getGame()));
