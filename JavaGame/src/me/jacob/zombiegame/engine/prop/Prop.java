@@ -6,8 +6,9 @@ import me.jacob.zombiegame.engine.Game;
 import me.jacob.zombiegame.engine.Room;
 import me.jacob.zombiegame.engine.sprite.Sprite;
 import me.jacob.zombiegame.engine.sprite.SpriteImage;
+import me.jacob.zombiegame.engine.util.Sortable;
 
-public abstract class Prop {
+public abstract class Prop implements Sortable {
 	
 	public boolean enabled;
 	
@@ -18,7 +19,6 @@ public abstract class Prop {
 
 	// Entity sprite
 	public abstract Sprite getSprite();
-	private PropMask mask;
 	
 	// Presence
 	private Game game;
@@ -36,8 +36,6 @@ public abstract class Prop {
 
 		this.game = game;
 		this.room = room;
-		
-		mask = null; // Declare mask
 		
 		game.getPropManager().addProp(this);
 	}
@@ -59,34 +57,6 @@ public abstract class Prop {
 	public abstract void update(double delta);
 	
 	/**
-	 * Gets/configures the prop mask for this prop.
-	 * 
-	 * @return the prop mask for this prop
-	 */
-	public PropMask getMask() {
-		if (getSprite() == null)
-			return null;
-		
-		SpriteImage sImg = getSprite().getCurrentFrame();
-		
-		// Get sprite size
-		int width = 0;
-		int height = 0;
-		
-		if (sImg.getSize() != null) {
-			width = sImg.getSize().width;
-			height = sImg.getSize().height;
-		}
-		
-		// Offset mask based on origin
-		int posX = (int) (x - (width * sImg.getOrigin().getOffsetX()));
-		int posY = (int) (y - (height * sImg.getOrigin().getOffsetY()));
-		
-		mask.setPos(posX, posY);
-		return mask;
-	}
-	
-	/**
 	 * Gets the game that the prop is a part of.
 	 * 
 	 * @return the game associated with the prop
@@ -103,8 +73,7 @@ public abstract class Prop {
 	public Room getRoom() {
 		return room;
 	}
-	
-	
+
 	/**
 	 * Sets the room that the prop is bound to.
 	 * 
@@ -121,5 +90,14 @@ public abstract class Prop {
 	 */
 	public boolean isPersistent() {
 		return room == null;
+	}
+
+	/**
+	 * Gets the dpeth of the prop (used mostly for sorting purposes).
+	 *
+	 * @return the depth of the prop
+	 */
+	public double getDepth() {
+		return depth;
 	}
 }

@@ -6,6 +6,8 @@ import java.util.List;
 
 import me.jacob.zombiegame.engine.Room;
 import me.jacob.zombiegame.engine.util.Logger;
+import me.jacob.zombiegame.engine.util.Sortable;
+import me.jacob.zombiegame.engine.util.Sorter;
 
 public class PropManager {
 	
@@ -23,20 +25,20 @@ public class PropManager {
 		p.enabled = true;
 	}
 	
-	private void disableProp(Prop p) {
-		p.enabled = false;
+	private void disableProp(Prop prop) {
+		prop.enabled = false;
 		
-		if (p.getSprite() != null)
-			p.getSprite().unload();
+		if (prop.getSprite() != null)
+			prop.getSprite().unload();
 	}
 	
-	public void removeProp(Prop p) {
+	public void removeProp(Prop prop) {
 		// Disable prop
-		disableProp(p);
+		disableProp(prop);
 		
 		// Remove prop from list
 		for (int i = 0; i < props.size(); i++)
-			if (props.get(i) == p)
+			if (props.get(i) == prop)
 				props.remove(i);
 	}
 	
@@ -59,14 +61,16 @@ public class PropManager {
 		for (Prop p : props)
 			if (p.enabled)
 				p.update(delta);
-		
-		// TODO sort all props by depth
 	}
 
 	public void drawAll(Graphics2D g2) {
 		for (Prop p : props)
 			if (p.enabled)
 				p.draw(g2);
+	}
+
+	public void sort() {
+		Sorter.sort(props);
 	}
 	
 }

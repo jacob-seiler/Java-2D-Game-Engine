@@ -76,6 +76,7 @@ public class DisplayManager extends Canvas {
 		frame.pack();
 		frame.setResizable(true);
 		frame.setLocationRelativeTo(null);
+		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
@@ -170,15 +171,15 @@ public class DisplayManager extends Canvas {
 	 * @param g2 the graphics to use to draw the bars
 	 */
 	private void drawBars(Graphics2D g2) {
+		g2.setColor(Color.BLACK);
+
 		if (scaleX < scaleY) {
 			// Top / bottom bars
-			g2.setColor(Color.BLACK);
 			g2.fill(new Rectangle2D.Double(0, 0, frame.getContentPane().getSize().getWidth(), deadSpaceY / 2)); // Top
 			g2.fill(new Rectangle2D.Double(0, frame.getContentPane().getSize().getHeight() - (deadSpaceY / 2),
 					frame.getContentPane().getSize().getWidth(), deadSpaceY / 2)); // Bottom
 		} else if (scaleY < scaleX) {
 			// Left / right bars
-			g2.setColor(Color.BLACK);
 			g2.fill(new Rectangle2D.Double(0, 0, deadSpaceX / 2, frame.getContentPane().getSize().getHeight())); // Left
 			g2.fill(new Rectangle2D.Double(frame.getContentPane().getSize().getWidth() - (deadSpaceX / 2), 0,
 					deadSpaceX / 2, frame.getContentPane().getSize().getHeight())); // Right

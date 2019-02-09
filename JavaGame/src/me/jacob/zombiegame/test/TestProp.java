@@ -23,7 +23,7 @@ public class TestProp extends Prop {
 	public TestProp(Game game, Room room) {
 		super(game, room);
 
-		sprite = new Sprite(new SpriteImage("test.png", width, height));
+		sprite = new Sprite(new SpriteImage("res/test.png", width, height));
 	}
 
 	@Override
@@ -64,6 +64,8 @@ public class TestProp extends Prop {
 			y = (int) getGame().getDisplayManager().height - height;
 			speedY = -1 * Math.abs(speedY);
 		}
+
+		depth = -y;
 	}
 	
 	@Override

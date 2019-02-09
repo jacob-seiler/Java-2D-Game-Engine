@@ -2,6 +2,7 @@ package me.jacob.zombiegame.engine.sprite;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -108,7 +109,7 @@ public class SpriteImage {
 	 */
 	public void load() {
 		try {
-			image = ImageIO.read(getClass().getClassLoader().getResource(path));
+			image = ImageIO.read(new FileInputStream(path));
 		} catch (IOException e) {
 			Logger.error("Error loading image... " + e.getMessage());
 			return;
