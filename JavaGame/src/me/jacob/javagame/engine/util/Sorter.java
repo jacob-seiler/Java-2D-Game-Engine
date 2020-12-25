@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Sorter {
 
-    public static void sort(List items, SortingMethod method) {
+    public static <T> void sort(List<T> items, SortingMethod method) {
         if (items.size() <= 1 || !(items.get(0) instanceof Sortable))
             return;
 
@@ -16,7 +16,7 @@ public class Sorter {
             return;
     }
 
-    public static void sort(List items) {
+    public static <T> void sort(List<T> items) {
         // TODO determine the best sorting algorithm to use
         /*
         When to use each sorting algorithm:
@@ -33,7 +33,7 @@ public class Sorter {
             sort(items, SortingMethod.QUICK);
     }
 
-    private static void quickSort(List items, int begin, int end) {
+    private static <T> void quickSort(List<T> items, int begin, int end) {
         if (begin >= end)
             return;
 
@@ -46,14 +46,14 @@ public class Sorter {
                 i++;
 
                 // Swap
-                Object swapTerm = items.get(i);
+                T swapTerm = items.get(i);
                 items.set(i, items.get(j));
                 items.set(j, swapTerm);
             }
         }
 
         // Swap
-        Object swapTerm = items.get(i + 1);
+        T swapTerm = items.get(i + 1);
         items.set(i + 1, items.get(end));
         items.set(end, swapTerm);
 
@@ -63,9 +63,9 @@ public class Sorter {
         quickSort(items, partitionIndex + 1, end);
     }
 
-    private static void insertionSort(List items) {
+    private static <T> void insertionSort(List<T> items) {
         for (int i = 1; i < items.size(); i++) {
-            Object key = items.get(i);
+            T key = items.get(i);
             int j = i - 1;
 
             while (j >= 0 && ((Sortable) items.get(j)).getDepth() > ((Sortable) key).getDepth()) {
